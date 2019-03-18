@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>.red {color: red;}</style>
+
+</head>
+
+<body>
+	<h1>gia</h1>
+
+	<input type="text" name="name" class="js_name" value="Xxxx">
+
+
+	<script type="text/javascript">
+		let input = document.getElementsByClassName("js_name")[0];
+		console.log(input);
+		input.onkeyup = function (e) {
+			if (input.value != "Xxxx") {
+				input.classList.add("red");
+			} else {
+				input.classList.remove("red");
+			};
+		};
+		document.write(
+			'<script src="http://' +
+				(location.host || '${1:localhost}').split(':')[0] +
+				':${2:35729}/livereload.js?snipver=1"></' +
+				'script>'
+		);
+	</script>
+	</body>
+
+</html>

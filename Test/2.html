@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+	<style type="text/css">
+		.test {
+			margin-top: 30px;
+			margin-left: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="test">
+		<div class="radiobtn">
+			<div class="form-check">
+				<input class="form-check-input cng" type="radio" id="S" value="S" name="size">
+				<label class="form-check-label" for="S">
+					S-size
+				</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input cng" type="radio" id="M" value="M" name="size">
+				<label class="form-check-label" for="M">
+					M-size
+				</label>
+			</div>
+			<div class="form-check">
+				<input class="form-check-input cng" type="radio" id="L" value="L" name="size">
+				<label class="form-check-label" for="L">
+					L-size
+				</label>
+			</div>
+		</div>
+		<hr>
+		<div class="check">
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="col1" value="1" name="color">
+				<label class="custom-control-label" for="col1">Color 1</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="col2" value="2" name="color">
+				<label class="custom-control-label" for="col2">Color 2</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="col3" value="3" name="color">
+				<label class="custom-control-label" for="col3">Color 3</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="col4" value="4" name="color">
+				<label class="custom-control-label" for="col4">Color 4</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="col5" value="5" name="color">
+				<label class="custom-control-label" for="col5">Color 5</label>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<div class="form-group">
+				<label for="manufacturer">manufacturer</label>
+				<select multiple class="form-control cng" id="manufacturer" name="manufacturer">
+					<option value="aaa" selected>aaa</option>
+					<option value="b&c">b&c</option>
+					<option value="ddd">ddd</option>
+					<option value="eee">eee</option>
+				</select>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input cng" id="sale" value="1" name="sale">
+				<label class="custom-control-label" for="sale">SALE</label>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		let url_string = "http://любой_домен/filter?size=M&color=1,2&manufacturer=aaa,eee"; //window.location.href
+
+
+		function getUrlVars(url) {
+			let vars = {};
+			let parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+				vars[key] = value;
+			});
+			return vars;
+		};
+
+		let params = getUrlVars(url_string);
+
+		for (let name in params) {
+			let elems = document.getElementsByName(name);
+			if (elems) {
+				let l = params[name].split(',');
+				elems.forEach((elem, i) => {
+					if (elem.tagName == "SELECT") {
+						for (let j = 0; j < elem.options.length; j++) {
+							if (l.includes(elem.options[j].value)) {
+								elem.options[j].selected = true;
+
+							}
+
+						}
+
+					} else {
+						if (l.includes(elem.value)) {
+							elem.checked = true;
+						}
+					}
+				});
+			}
+		}
+
+
+
+		let cng = document.getElementsByClassName("cng");
+		for (let i = 0; i < cng.length; i++) {
+			cng[i].onchange = function (e) {
+
+				if (this.name == "sale") return false;
+				let values = [];
+				if (this.tagName == "SELECT") {
+					for (let j = 0; j < this.options.length; j++) {
+						if (this.options[j].selected) {
+							values.push(this.options[j].value);
+						};
+					};
+				} else {
+					let ch = document.querySelectorAll("[name=" + this.name + "]:checked");
+					ch.forEach((item, index) => {
+						values.push(item.value);
+					});
+
+				};
+				values = values.join(',');
+				params[this.name] = values;
+				newUrl(params);
+
+
+			};
+		};
+
+		let newUrl = function (arr) {
+			let url = new URL("http://custom.domain/filter?");
+			for (let item in arr) {
+				url.searchParams.set(item, arr[item]);
+			};
+			console.log(decodeURIComponent(url.href));
+
+		}
+	</script>
+</body>
+
+</html>

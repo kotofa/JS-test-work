@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>domain.one</title>
+	<style type="text/css">
+		iframe{
+			height: 300px;
+			border: #000 1px solid;
+		}
+	</style>
+</head>
+<body>
+	<iframe src="frame.html" frameborder="0" id="receiver"></iframe>
+<!-- 	src="http://domain.two/frame.html -->
+	<br>
+	<button id="rd">Прочитать localStorage</button>
+	<button id="wrt">Записать в localStorage</button>
+	<button id="del">Удалить из localStorage</button>
+
+
+	<script type="text/javascript">
+		
+
+		window.onload = function(){
+
+			let receiverWindow = document.getElementById("receiver").contentWindow;
+			receiverWindow.postMessage("hello","*")
+			// чтение
+			document.getElementById("rd").addEventListener("click",function(){
+				receiverWindow.postMessage("read","*")
+			});
+			// запись
+			document.getElementById("wrt").addEventListener("click",function(){
+				receiverWindow.postMessage("wrt","*")
+			});
+			// очистка
+			document.getElementById("del").addEventListener("click",function(){
+				receiverWindow.postMessage("del","*")
+			});
+
+
+			window.addEventListener("message",function(e){
+
+				if(e.data == "rd_ok"){
+					console.log("read successfully");
+				};
+
+				if(e.data == "wrt_ok"){
+					console.log("written successfully");
+				};
+
+				if(e.data == "del_ok"){
+					console.log("deleting was successful");
+				};
+
+			});
+
+		};
+		
+
+	</script>
+</body>
+</html>

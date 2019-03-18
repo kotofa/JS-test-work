@@ -1,0 +1,202 @@
+<html><head>
+	<title>123</title>
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+<style type="text/css">
+	body{
+		font-size: 15px;
+	}
+	.big_div{
+		width: 800px;
+		margin: 0 auto;
+		background-color: #000;
+		padding-bottom: 80px;
+	}
+	li {
+		margin: 0;
+		padding:0;
+		height: 50px;
+		border-bottom: 1.5px solid #000;
+		line-height: 50px;
+		color: #fff;
+		padding-left: 30px;
+		font-size: 17px;
+	}
+	.ul_class{
+		list-style: none;
+		padding: 0;
+
+	}
+	.li_color{
+		background: #dd181f;
+		transition: all 1s;
+	}
+	.li_color_2{
+		background: #f24814;
+		transition: all 1s;
+	}
+	.inp {
+		padding:0 15px;
+		display: flex;
+		margin-top: 20px;
+	}
+	.inp .my_btn {
+		flex: 1;
+	}
+	.inp .input_form {
+		flex: 8;
+	}
+	.input_form{
+		width: 60%;
+		color: #000;
+	}
+	.my_btn{
+		width: 60px;
+	    height: 35px;
+	    color: #fff;
+	    background: #dd181f;
+	    border-radius: 5px;
+	    line-height: 35px;
+	    margin-left: 10px;
+	    text-align: center;
+	    cursor: pointer;
+	}
+	.my_btn:hover{
+		background: #a80107;
+	}
+	.my_btn:active{
+		background: #6d090d;
+		box-shadow: 0 3px #6d090d inset;
+	}
+	.start_phase {
+		display: block;
+	}
+	.start_phase .input_form {
+		display: none;
+	}
+	.start_phase .my_btn {
+		width: 120px;
+		float: right;
+
+	}
+	.input_warning{
+		background: #dd181f;
+	}
+	
+</style>
+</head>
+<body style="background-color: #fff;">
+
+
+<div class="big_div">
+	
+	
+	<div class="header" style="padding: 20px 0;">
+		<div style="text-align: center; color: #fff; margin: 40px auto;">
+			<span class="glyphicon glyphicon-tower" style="font-size: 24px; "></span>
+			<p>SOME ICON</p>
+		</div>
+		<h5 style="letter-spacing: 1em; color: #fff; text-align: center;">
+			BUY GROSERIES
+		</h5>
+	</div>
+	<div>
+		<ul class="ul_class">
+		<li class="li_color">Первая заметка</li></ul>
+		<div class="inp start_phase">
+			<input class="form-control input_form" placeholder="Add description..." type="text">
+				<div class="my_btn">NEW ITEM</div>
+		</div>
+	</div>
+</div> 
+
+<script type="text/javascript">
+
+var hw = {
+	input: document.querySelector(".input_form"),
+	validate : false,
+
+	init: function(){
+		
+		
+		document.querySelector(".my_btn").onclick=function(){
+			hw.open_text();
+		};
+		this.input.onkeypress = function(e){
+			if(hw.validate){
+				var Key = e.keyCode;
+				if (Key == 10 && e.ctrlKey) {
+					hw.open_text();
+				}
+			}
+		}
+		this.input.onkeyup = function(e){
+			hw.valid();
+		}
+		this.input.onkeydown = function(e){
+			if(this.value.length>0){
+				hw.valid();
+			}
+		}
+
+	},
+	open_text: function(){
+			hw.toogleButt();
+			if (document.querySelector('.start_phase') !== null) {
+				document.querySelector('.inp').classList.remove("start_phase");	
+			}else{
+				hw.addLine();
+			}
+			
+			
+	},
+	addLine: function(){
+		if (this.input.value && hw.validate) {
+			var text = this.input.value;
+			var newLi = document.createElement('li');
+			newLi.setAttribute("class","li_color li_color_2");
+			newLi.textContent = text;
+			document.querySelector(".ul_class").appendChild(newLi);
+			this.input.value = "";
+			hw.colorChange(newLi);
+			document.querySelector('.inp').classList.add("start_phase");
+			this.input.classList.remove("input_warning");
+		}
+
+	},
+	toogleButt: function(){
+		var butt = document.querySelector('.my_btn');
+		if(document.querySelector('.start_phase') !== null){
+			butt.textContent="ADD";
+		}else if(hw.validate){
+			butt.textContent="NEW ITEM";
+		}
+	},
+	colorChange: function(newLi){
+		setTimeout(function(){
+			newLi.classList.remove("li_color_2");
+		},1500);
+
+	},
+	valid: function(){
+		if (this.input.value.length > 50 || this.input.value.length == 0) {
+			this.input.classList.add("input_warning");
+			this.validate = false;
+		}else{
+			this.input.classList.remove("input_warning");
+			this.validate = true;
+		}
+	}
+
+
+}
+
+hw.init();
+
+</script>
+
+
+
+
+</body></html>

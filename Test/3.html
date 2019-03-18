@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+var responses = [];
+	function a(wUrl){
+		responses[wUrl] = 'sending';
+	let req = new XMLHttpRequest();
+	req.onload = function(){
+		let resp = req.response;
+		responses[wUrl] = 'OK';
+		console.log(responses);
+		check();
+	};
+	req.open("GET", wUrl, true);
+	req.send();
+	};
+
+let check = function(){
+	let valid = true;
+	console.log(Object.keys(responses).length);
+		for(let item in responses){
+			console.log(responses[item]);
+			if(responses[item] != 'OK'){
+				valid = false;
+			}
+		}
+		if(valid) {
+			console.log('Все ответы пришли');
+		}
+	
+};
+
+
+let weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Minsk,by&units=metric&APPID=_YOUR_API_KEY_HERE";
+let googleUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&key=123&q=SEARCH_TERM&type=video";
+
+
+a(weatherUrl);
+a(googleUrl);
+
+</script>
+</body>
+</html>

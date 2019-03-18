@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>domain.two</title>
+</head>
+<body>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo tempore, expedita est aspernatur accusamus sit 	dolorem et illo distinctio corporis, neque, error ipsa, eum? Suscipit fugiat totam voluptatum necessitatibus 	ex.
+
+	</p>
+
+
+
+
+	<script type="text/javascript">
+
+		window.onload = function(){
+			let currentCount = 0;
+			window.addEventListener("message",function(e){
+				if(e.data == "read"){
+					console.log(localStorage);
+					window.parent.postMessage("rd_ok", "*");
+				};
+				// запись
+				if(e.data == "wrt"){
+
+				    let wrt = function(callback){
+				    	currentCount++
+				    	localStorage.setItem(`Key_${currentCount}`, `value_${currentCount}`);
+				    	callback();
+				    };
+				    
+					wrt(function(){
+						window.parent.postMessage("wrt_ok", "*");
+					});
+				};
+
+				// очистка
+
+				if(e.data == "del"){
+					let del = function(callback){
+				    	currentCount = 0;
+				    	localStorage.clear();
+				    	callback();
+				    };
+				    del(function(){
+						window.parent.postMessage("del_ok", "*");
+					});
+				};
+			});	
+		};
+
+		
+	</script>
+</body>
+</html>
