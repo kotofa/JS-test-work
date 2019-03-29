@@ -1,0 +1,155 @@
+<html><head>
+	<title>123</title>
+
+	
+<style type="text/css">
+	html+body{
+		width: 100%
+		height: 100%;
+	}
+	.mainDiv{
+		margin: 0 auto;
+		width: 40%;
+	}
+	.topPanel{
+		display: flex;
+		align-items: center;
+		background: #2f9553;
+		height: 50%;
+	}
+	img{
+		width: 100%;
+	}
+	.imgWeather{
+		display: block;
+		height: 100px;
+		width: 100px;
+	}
+	.weatherNow{
+		margin: 0 auto;
+		text-align: center;
+	}
+	h2{
+		margin: 0;
+		color: #fff;
+		font-family: 'PT-sans', arial ;
+	}
+	.items{
+		padding: 0 7px;
+	}
+	.weatherItem{
+
+		display: flex;
+		justify-content: space-between;
+		border-bottom: solid #858a8a 1px;
+		height: 10%;
+		color: #000;
+		font-family: 'PT-sans', arial;
+		text-align: center;
+	}
+	.itemImg>div{
+		width: 45px;
+		margin: 0 auto;
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	}
+	.weatherItem>div{
+		width: 33.333%;
+	    display: flex;
+    	align-items: center;
+	}
+	.weatherItem>div p {
+		width: 100%;
+	}
+	.left{
+		text-align: left;
+	}
+	.right{
+		text-align: right;
+	}
+</style>
+</head>
+<body>
+
+<div class="mainDiv">
+	<div class="topPanel">
+		<div class="weatherNow">
+			<span class="imgWeather">
+				
+			</span>
+			<h2 class="tdTmp">
+				
+			</h2>
+		</div>
+	</div>
+	<div class="items">
+		
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+	var app ={
+		weatherUrl: "http://api.openweathermap.org/data/2.5/forecast?q=Minsk,by&units=metric&APPID=517cb4b8c4e115344c29258511aad60e",
+		init: function(){
+			this.getWeather();
+
+		},
+		getWeather: function(){
+			var req = new XMLHttpRequest();
+			req.onload = function(){
+				var resp = req.response;
+				console.log(resp);
+				app.jsondata = resp;
+				app.realData();
+				app.makeHtml();
+				};
+			req.open("GET", this.weatherUrl, true);
+			req.responseType = "json";
+			req.send();
+			},
+		realData: function(){
+			app.wData = [];
+			this.jsondata.list.forEach(function(item,index){
+				if(index==0 || index%8==0){
+					app.wData.push(item);	
+				}
+			});
+			console.log(app.wData);
+		},
+		makeHtml: function(){
+			var today = document.querySelector(".imgWeather");
+			var firstElem = app.wData.shift();
+			today.innerHTML = `<img src="icons/${firstElem.weather.shift().icon}.png" alt="">`;
+			var todayTemp = document.querySelector(".tdTmp");
+			todayTemp.innerHTML = `${Math.round(firstElem.main.temp)} &deg;C`;
+			console.log(app.wData);
+			var nextWeather = document.querySelector(".items");
+			app.wData.forEach(function(item,index){
+				var date = new Date(item.dt_txt);
+				console.log(date);
+			var item = `<div class="weatherItem">
+			<div>
+				<p class="left">${date.getDate()+'.'+date.getMonth()+1 +'. '+date.getFullYear()}</p>
+			</div>
+			<div class="itemImg">
+				<div>
+					<img src="icons/${item.weather.shift().icon}.png" alt="">
+				</div>
+			</div>
+			<div>
+				<p class="right">${Math.round(item.main.temp)} &deg;C</p>
+			</div>
+		</div>`;
+				nextWeather.innerHTML += item;
+			});
+		}
+
+	}
+	app.init();
+
+</script>
+
+</body>
+</html>
